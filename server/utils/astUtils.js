@@ -142,4 +142,23 @@ const evaluateAST = (node, data) => {
     return false;
 };
 
-module.exports = { createAST, evaluateAST };
+const combineASTs = (astList, logicalOperator) => {
+    if (astList.length === 1) {
+        return astList[0];
+    }
+
+    let combinedAST = astList[0];
+
+    for (let i = 1; i < astList.length; i++) {
+        combinedAST = {
+            type: 'logical_operator',
+            operator: logicalOperator === '&' ? "AND" : "OR",
+            left: combinedAST,
+            right: astList[i],
+        };
+    }
+
+    return combinedAST;
+};
+
+module.exports = { createAST, evaluateAST, combineASTs };
